@@ -19,4 +19,5 @@ SECRET_SESSION=""
 ## TODO
 
 Faire les controllers.
-Mettre en place les routes/controllers/requête pour l'authentification (register/login)
+Mettre en place les routes/controllers/requête pour l'authentification (register/login).
+Faire une route avec un paramètre dynamique (récupérer un produit par exemple).
