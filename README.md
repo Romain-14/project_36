@@ -16,6 +16,11 @@ LOCAL_PORT=""
 SECRET_SESSION=""
 ```
 
+## Correction
+
+Regarder le fichier product.routes.js, les autres fichiers étant pratiquement identiques un seul fichier corrigé est suffisant.
+Par contre, vous pouvez les commenter vous-même pour vérifier la bonne compréhension des instructions !
+
 ## TODO
 
 Faire les controllers.

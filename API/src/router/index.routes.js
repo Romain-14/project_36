@@ -12,7 +12,8 @@ router.get("/", (req, res) => {
     res.json({msg: "connected to the API !"});
 });
 
-// http://localhost:9000/api/v1/product -> orienté vers le router "product"
+// En fonction du point de terminaison, on redirige vers le router correspondant ; exemple:
+// http://localhost:9000/api/v1/product -> oriente vers le router "product"
 router.use(`${BASE_API}/product`, product_router);
 router.use(`${BASE_API}/seller`, seller_router);
 router.use(`${BASE_API}/category`, category_router);
