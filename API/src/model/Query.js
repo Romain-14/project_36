@@ -8,7 +8,9 @@ class Query {
         return result;
     }
 
-    static async runWithParams(query, data) {        
+    // avec la METHODE 2 il faut passer un objet en paramètre attention donc coté controller ce que vous envoyez !!
+    static async runWithParams(query, data) {   
+        // console.log(data)
         // ici on a des paramètres dans la requête, donc méthode execute afin de sécuriser les données
         // METHODE 1
         // const [result] = await pool.execute(query, data); 

@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { getAll, getById, add } from "../controllers/product.js";
+import adminRequired from "../middlewares/adminRequired.js";
 
 const router = Router();
 
@@ -9,6 +10,6 @@ router.get("/", getAll);
 router.get("/:id", getById);
 
 
-router.post("/", add);
+router.post("/", adminRequired, add);
 
 export default router;

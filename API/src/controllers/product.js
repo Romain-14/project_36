@@ -40,7 +40,7 @@ const getById = async (req, res) => {
             if(!response) return res.status(404).json({ message: "Produit non trouvé" });
             res.json(response);
     } catch (error) {
-        res.status(500).json({ message: "Erreur de serveur", error });
+        res.status(500).json({ msg: "Erreur de serveur", error: error.message });
     }
 }
 
@@ -61,8 +61,7 @@ const add = async (req, res) => {
 
 		res.json({ msg: "Les données ont bien été insérées !", response });
 	} catch (error) {
-		console.log(error);
-        res.status(500).json({ message: "Erreur de serveur", error });
+        res.status(500).json({ msg: "Erreur de serveur", error: error.message });
 	}
 
 };

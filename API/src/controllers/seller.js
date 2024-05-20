@@ -19,7 +19,7 @@ const add =   async (req, res) => {
         res.json({ msg: `Vendeur '${label}' bien ajouté sur l'id ${response.insertId}` });
         
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ msg: "Erreur de serveur", error: error.message });
     }
 
 }
