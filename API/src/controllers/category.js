@@ -15,7 +15,7 @@ const getAll = async (req, res) => {
     }
 }
 
-const add =  async (req, res) => {
+const add = async (req, res) => {
     const { label } = req.body;
 
     try {

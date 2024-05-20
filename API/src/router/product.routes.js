@@ -9,7 +9,7 @@ const router = Router();
 router.get("/", getAll);
 router.get("/:id", getById);
 
-
+// adminRequired est un middleware qui vérifie si un utilisateur est connecté et si c'est un admin (fichier middlewares/adminRequired.js)
 router.post("/", adminRequired, add);
 
 export default router;
