@@ -52,9 +52,9 @@ const login = async (req, res) => {
 
 		// Sauvegarder les informations de l'utilisateur dans la session
 		req.session.user = {
+            id: user.id,
 			nickname: user.nickname,
             isAdmin : user.isAdmin
-			// Ajoutez d'autres informations de l'utilisateur si nécessaire
 		};
 
 		res.status(200).json({ message: "Connexion réussie" });

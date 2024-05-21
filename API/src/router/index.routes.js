@@ -4,6 +4,7 @@ import auth_router from "./auth.routes.js";
 import product_router from "./product.routes.js";
 import seller_router from "./seller.routes.js";
 import category_router from "./category.routes.js";
+import order_router from "./order.routes.js";
 
 const router = Router();
 const BASE_API = "/api/v1";
@@ -19,5 +20,6 @@ router.use(`${BASE_API}/auth`, auth_router);
 router.use(`${BASE_API}/product`, product_router);
 router.use(`${BASE_API}/seller`, seller_router);
 router.use(`${BASE_API}/category`, category_router);
+router.use(`${BASE_API}/order`, order_router);
 
 export default router;

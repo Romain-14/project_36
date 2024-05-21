@@ -27,6 +27,8 @@
     "express": "^4.19.2",
     "express-mysql-session": "^3.0.2",
     "express-session": "^1.18.0",
-    "mysql2": "^3.9.7"
+    "mysql2": "^3.9.7",
+    "nanoid": "^5.0.7",
+    "uuidv4": "^6.2.13"
   }
 }
