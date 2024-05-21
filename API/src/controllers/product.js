@@ -6,7 +6,7 @@ const getAll = async (req, res) => {
 	try {
 		// on récupère les données de la table product avec la méthode query() de pool ( pas execute ici car on ne fait pas de modification dans la base de données)
 		const query = `
-            SELECT main_title, price, seller.label AS seller, category.label AS category
+            SELECT product.id, main_title, price, seller.label AS seller, category.label AS category
             FROM product 
             JOIN seller ON product.seller_id = seller.id 
             JOIN category ON product.category_id = category.id
