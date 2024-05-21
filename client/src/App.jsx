@@ -1,51 +1,60 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import { useUser } from "./hooks/UseUser";
+
+import Header from "./views/user/partials/Header";
+import Home from "./views/user/Home";
+import Admin from "./views/admin/Home";
+import Auth from "./views/auth/Login";
+import Footer from "./views/user/partials/Footer";
 
 function App() {
-	const [datasState, setDatasState] = useState(null);
-
-	useEffect( () => {
-        // fonction asynchrone pour fetch sur notre serveur API les produits
-		async function fetchData() {
-            // utilisation de try/catch pour gérer les erreurs
-			try {
-                // on stock la réponse qui est en JSON dans une constante
-				const datas = await fetch(
-					"http://localhost:9000/api/v1/product"
-				);
-                // La réponse envoyée étant en JSON on doit la parser pour la manipuler en JS
-				const datasParsed = await datas.json();
-                // vérification de la réponse "parsée"
-				console.log(datasParsed);
-                // mise à jour de l'état de notre composant avec les données reçues, provoquera un nouveau rendu
-				setDatasState(datasParsed);
-                console.log(datasState); // ici vaudra null, mise à jour asynchrone (sur le prochain rendu/montage)
-			} catch (error) {
-				console.log(error);
+	const { user, setUser } = useUser();
+    
+	useEffect(() => {
+		async function fetchAuthentication() {
+			const response = await fetch("http://localhost:9000/api/v1/auth", {
+				credentials: "include",
+			});
+			if (response.status === 401) {
+				console.log("Unauthorized");
+				return;
+			}
+			if (response.ok) {
+				const data = await response.json();
+				setUser(data.user);
 			}
 		}
-		fetchData();
-	}, []);
+		fetchAuthentication();
+	}, [setUser]);
 
-    // tant que les données ne sont pas récupérées on affiche un message de chargement
-	if (!datasState) {
-		return <div>Loading...</div>;
-	}
-
-    // si les données sont récupérées on les affiche 
-	if (datasState) {
-        return (
-            <main>
-               {
-               datasState.response.map( ( data ) => (
-                    <article key={data.id}>
-                        <h2>{data.main_title}</h2>
-                        <p>{data.price} €</p>
-                    </article>
-                ))
-                    
-               }    
-            </main>                    
-        )
+	if (user?.isAdmin) {
+		return (
+			<>
+				<Router>
+					<Header />
+					<Routes>
+						<Route path="/" element={<Admin />} />
+						<Route path="*" element={<p>NOT FOUND</p>} />
+					</Routes>
+				</Router>
+			</>
+		);
+	} else {
+		return (
+			<>
+				<Router>
+					<Header />
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="authentication" element={<Auth />} />
+						<Route path="*" element={<p>NOT FOUND</p>} />
+					</Routes>
+					<Footer />
+				</Router>
+			</>
+		);
 	}
 }
 

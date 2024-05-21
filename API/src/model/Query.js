@@ -17,7 +17,6 @@ class Query {
 
         // METHODE 2 
         // Object.values(data) permets de transformer les valeurs des propriétés d'un objet afin de les placer dans un tableau
-        console.log(query, data)
         const [result] = await pool.execute(query, Object.values(data));
         return result;
     }

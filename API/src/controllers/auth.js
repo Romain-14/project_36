@@ -1,14 +1,25 @@
 import bcrypt from "bcrypt";
 import Query from "../model/Query.js";
 
+const checkAuth = (req, res) => {
+    if(req.session.user){
+        console.log("session user")
+        res.json({message: "Utilisateur connecté", user: req.session.user});
+    } else {
+        console.log("AUCUNE SESSION user")
+        res.status(401).json({message: "Utilisateur non connecté"});
+    }
+}
+
 // Fonction d'inscription (register)
 const register = async (req, res) => {
 	try {
 		// Récupérer les données de l'utilisateur depuis la requête
 		const query1 = `SELECT * FROM user WHERE nickname = ?`;
-		// Vérifier si l'utilisateur existe déjà dans la base de données
-		const existingUser = await Query.runWithParams(query1, req.body);
 
+		// Vérifier si l'utilisateur existe déjà dans la base de données
+		const existingUser = await Query.runWithParams(query1, { nickname: req.body.nickname });
+        console.log(existingUser.length)
 		if (existingUser.length) {
 			// code 409 pour indiquer un conflit
 			return res
@@ -50,14 +61,15 @@ const login = async (req, res) => {
 				.json({ message: "Information(s) incorrecte(s)" });
 		}
 
-		// Sauvegarder les informations de l'utilisateur dans la session
-		req.session.user = {
-            id: user.id,
-			nickname: user.nickname,
-            isAdmin : user.isAdmin
-		};
+        const infoUser ={
+            nickname: user.nickname,
+            isAdmin: user.isAdmin
+        }
 
-		res.status(200).json({ message: "Connexion réussie" });
+		// Sauvegarder les informations de l'utilisateur dans la session
+		req.session.user = infoUser;
+
+		res.status(200).json({ message: "Connexion réussie", user: infoUser});
 	} catch (error) {
 		res.status(500).json({ message: "Erreur de serveur", error: error.message });
 	}
@@ -74,4 +86,4 @@ const logout = async (req, res) => {
 };
 
  
-export { login, register, logout };
+export { checkAuth, login, register, logout };

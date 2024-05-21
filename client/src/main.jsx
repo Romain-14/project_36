@@ -1,7 +1,12 @@
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
 
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
+import { UserProvider } from "./store/user/Context";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-    <App />
-)
+import "./assets/styles/scss/main.scss";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+    <UserProvider>
+        <App />
+    </UserProvider>
+);

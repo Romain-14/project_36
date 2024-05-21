@@ -12,7 +12,7 @@ const getAll = async (req, res) => {
             JOIN category ON product.category_id = category.id
         `;
 		const response = await Query.run(query);
-        console.log(response); // vérifier ici qu'on récupère bien dans un tableau les données
+  
 		// on renvoie la réponse au client au format JSON, un message et la réponse (les données de la table product)
 		res.json({
 			msg: "Je suis sur la route API pour récupérer TOUS les produits !",

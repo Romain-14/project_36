@@ -48,15 +48,15 @@ app.use(newSession);
 app.use(express.json());
 app.use(express.static("public"));
 
-app.use((req, res, next) => {
-	console.log("MW", req.session);
-    if(req.session.isAdmin){
-        console.log("hello admin");
-    } else {
-        console.log("You are an user");
-    }
-	next();
-});
+// app.use((req, res, next) => {
+// 	console.log("MW", req.session);
+//     if(req.session.isAdmin){
+//         console.log("hello admin");
+//     } else {
+//         console.log("You are an user");
+//     }
+// 	next();
+// });
 
 app.use(router);
 
