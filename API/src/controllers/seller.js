@@ -1,9 +1,18 @@
 import Query from "../model/Query.js";
 
 const getAll = async (req, res) => {
-	res.json({
-		msg: "Je suis sur la route API pour récupérer TOUS les 'seller' !",
-	});
+    try {
+        const query = `
+            SELECT id, label
+            FROM seller
+        `;
+        const response = await Query.run(query);
+        
+        res.json(response);
+
+    } catch (error) {
+        res.status(500).json({ msg: "Erreur de serveur", error: error.message });
+    }
 }
 
 const add =   async (req, res) => {

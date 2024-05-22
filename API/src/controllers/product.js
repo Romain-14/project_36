@@ -63,6 +63,7 @@ const add = async (req, res) => {
 
 		res.json({ msg: "Les données ont bien été insérées !", response });
 	} catch (error) {
+        console.log("ERROR",error)
 		res.status(500).json({
 			msg: "Erreur de serveur",
 			error: error.message,

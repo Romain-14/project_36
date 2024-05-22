@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useUser } from "../../hooks/UseUser";
+import { useUser } from "../../hooks/useUser";
 
 function Register() {
 	const { setUser } = useUser();

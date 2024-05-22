@@ -7,27 +7,16 @@ import {
 	faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { useUser } from "../../../hooks/UseUser";
-import useMenu from "../../../hooks/UseMenu";
+import { useUser } from "../../../hooks/useUser";
+import useMenu from "../../../hooks/useMenu";
 import logo from "../../../assets/images/logo.png";
 
 function Header() {
-	const { user, setUser } = useUser();
+	const { user, logout } = useUser();
 	const { isMenuOpen, toggleMenu } = useMenu();
 
-	async function logoutHandler() {
-		const response = await fetch(
-			"http://localhost:9000/api/v1/auth/logout",
-			{
-				credentials: "include",
-			}
-		);
-		if (response.ok) {
-			setUser(null);
-            toggleMenu();
-		}
-	}
 
+    console.log(user)
 	return (
 		<header>
 			{isMenuOpen && <div className="overlayOn" onClick={toggleMenu} />}
@@ -57,13 +46,13 @@ function Header() {
 					<Link to={"/"}>Nos nouveautés</Link>
 					<Link to={"/"}>Nos Coup de coeur</Link>
 
-					{user && (
+					{user.isLogged && (
 						<>
 							<NavLink to={"/dashboard"} className={"bar-nav"}>
 								Compte
 							</NavLink>
 							<button
-								onClick={logoutHandler}
+								onClick={logout}
 								className={"bar-nav"}
 							>
 								Déconnexion
@@ -73,12 +62,12 @@ function Header() {
 				</nav>
 			)}
 			<nav>
-				{!user && (
+				{!user.isLogged && (
 					<NavLink to={"login"} className={"bar-nav"}>
 						Connexion
 					</NavLink>
 				)}
-				{user && (
+				{user.isLogged && (
 					<>
 						<NavLink to={"/dashboard"} className={"bar-nav"}>
 							{user.nickname} <FontAwesomeIcon icon={faUser} />

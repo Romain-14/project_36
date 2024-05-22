@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import { useUser } from "../../hooks/UseUser";
+import { useUser } from "../../hooks/useUser";
 
 function Login() {
-	const { setUser } = useUser();
+	const { login } = useUser();
 	const [error, setError] = useState(null);
 	const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ function Login() {
 			return;
 		}
 
-		setUser(responseParsed.user);
+		login(responseParsed.user);
 		navigate("/");
 	}
 

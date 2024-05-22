@@ -3,7 +3,7 @@ import Query from "../model/Query.js";
 const getAll = async (req, res) => {
     try {
         const query = `
-            SELECT label
+            SELECT id, label
             FROM category
         `;
         const response = await Query.run(query);

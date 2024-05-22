@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import UseMenu from "../../hooks/UseMenu";
+import useMenu from "../../hooks/useMenu";
+import {useCart} from "../../hooks/useCart";
 
+import Loader from "../../components/Loader";
 import noPicture from "../../assets/images/no-picture.jpg";
 
 function Home() {
 	const [datasState, setDatasState] = useState(null);
 
-	UseMenu();
+    const {addToCart} = useCart();
+	useMenu();
 
 	useEffect(() => {
 		// fonction asynchrone pour fetch sur notre serveur API les produits
@@ -31,9 +34,9 @@ function Home() {
 		fetchData();
 	}, []);
 
-	// tant que les données ne sont pas récupérées on affiche un message de chargement
+	// tant que les données ne sont pas récupérées fait patienter avec un loader
 	if (!datasState) {
-		return <div>Loading...</div>;
+		return <Loader />;
 	}
 
 	// si les données sont récupérées on les affiche
@@ -47,6 +50,7 @@ function Home() {
 						<article key={data.id}>
 							<h3>{data.main_title}</h3>
 							<img src={noPicture} alt={data.main_title} />
+                            <button onClick={() => addToCart(data)}>Ajouter au panier</button>
 						</article>
 					))}
                     

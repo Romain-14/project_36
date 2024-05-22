@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import noPicture from "../../assets/images/no-picture.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function Product() {
 	const [products, setProducts] = useState(null);
@@ -21,36 +23,41 @@ function Product() {
 			}
 			if (response.ok) {
 				const data = await response.json();
-                setProducts(data.response);
+				setProducts(data.response);
 			}
 		}
 		fetchProducts();
 	}, [refreshProductList]);
 
-    async function deleteHandler(e, id) {
-        e.preventDefault();
-        const response = await fetch("http://localhost:9000/api/v1/product/" + id, {
-            method: "DELETE",
-            credentials: "include",
-        });
-        if (response.ok) {
-            setProductList(!refreshProductList);
-        }
+	async function deleteHandler(e, id) {
+		e.preventDefault();
+		const response = await fetch(
+			"http://localhost:9000/api/v1/product/" + id,
+			{
+				method: "DELETE",
+				credentials: "include",
+			}
+		);
+		if (response.ok) {
+			setProductList(!refreshProductList);
+		}
+	}
 
-    }
-
-    if (!products) {
-        return (
-            <main>
-                <h1>Loading...</h1>
-            </main>
-        )
-    }
+	if (!products) {
+		return (
+			<main>
+				<h2>Loading...</h2>
+			</main>
+		);
+	}
 
 	return (
 		<main>
-			<h1>Liste des Produits</h1>
 			<section>
+				<h2>Liste des Produits</h2>
+				<Link to="/product/add">
+					Ajouter un produit <FontAwesomeIcon icon={faPlus} />
+				</Link>
 				<table>
 					<thead>
 						<tr>
@@ -66,7 +73,7 @@ function Product() {
 						{products.map((product) => {
 							return (
 								<tr key={product.id}>
-                                    <td>{product.id}</td>
+									<td>{product.id}</td>
 									<td>
 										<img
 											src={
@@ -81,9 +88,19 @@ function Product() {
 									<td>{product.price} €</td>
 									<td>{product.stock}</td>
 									<td>
-                                        <Link to={"detail/" + product.id}>Détail</Link>
-										<Link to={"edit/" + product.id}>Modifier</Link>
-										<button onClick={(e) => deleteHandler(e, product.id)}>Supprimer</button>
+										<Link to={"detail/" + product.id}>
+											Détail
+										</Link>
+										<Link to={"edit/" + product.id}>
+											Modifier
+										</Link>
+										<button
+											onClick={(e) =>
+												deleteHandler(e, product.id)
+											}
+										>
+											Supprimer
+										</button>
 									</td>
 								</tr>
 							);
