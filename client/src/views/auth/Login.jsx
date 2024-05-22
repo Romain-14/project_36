@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import { useUser } from "../../hooks/UseUser";
 
 function Login() {
-    const { setUser } = useUser();
+	const { setUser } = useUser();
 	const [error, setError] = useState(null);
-    const navigate = useNavigate();
+	const navigate = useNavigate();
 
 	async function submitHandler(e) {
 		e.preventDefault();
@@ -29,22 +29,26 @@ function Login() {
 		if (response.status === 401 || response.status === 500) {
 			setError(responseParsed.message);
 			return;
-		}        
-        
-        setUser(responseParsed.user);
-        navigate("/");
+		}
+
+		setUser(responseParsed.user);
+		navigate("/");
 	}
 
 	return (
-		<main>
+		<main id="auth">
 			{error && <p>{error}</p>}
 			<form onSubmit={submitHandler}>
-				<input type="text" id="nickname" name="nickname" required />
+				<input type="text" id="nickname" name="nickname" placeholder="Votre nom d'utilisateur" required />
 
-				<input type="password" id="password" name="password" required />
+				<input type="password" id="password" name="password" placeholder="Votre mot de passe" required />
 
 				<button type="submit">Login</button>
 			</form>
+			<p>
+				Vous n&apos;avez pas de compte ?{" "}
+				<Link to="/register">Inscrivez-vous</Link>
+			</p>
 		</main>
 	);
 }

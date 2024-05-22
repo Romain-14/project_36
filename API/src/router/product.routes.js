@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { getAll, getById, add } from "../controllers/product.js";
+import { getAll, getById, add, update, remove } from "../controllers/product.js";
 import adminRequired from "../middlewares/adminRequired.js";
 
 const router = Router();
@@ -11,5 +11,7 @@ router.get("/:id", getById);
 
 // adminRequired est un middleware qui vérifie si un utilisateur est connecté et si c'est un admin (fichier middlewares/adminRequired.js)
 router.post("/", adminRequired, add);
+router.patch("/:id", adminRequired, update);
+router.delete("/:id", adminRequired, remove);
 
 export default router;

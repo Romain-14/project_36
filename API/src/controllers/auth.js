@@ -3,7 +3,7 @@ import Query from "../model/Query.js";
 
 const checkAuth = (req, res) => {
     if(req.session.user){
-        console.log("session user")
+        console.log("session existante")
         res.json({message: "Utilisateur connecté", user: req.session.user});
     } else {
         console.log("AUCUNE SESSION user")
