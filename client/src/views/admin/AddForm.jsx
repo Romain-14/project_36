@@ -5,6 +5,7 @@ function AddForm() {
 	const [categories, setCategories] = useState(null);
 	const [sellers, setSellers] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState(null);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -52,20 +53,26 @@ function AddForm() {
 			e.preventDefault();
 			const form = e.target;
 			const formData = new FormData(form);
-			const data = Object.fromEntries(formData);
-			console.log(data);
-			const response = await fetch("http://localhost:9000/api/v1/product", {
-				method: "POST",
-				body: JSON.stringify(data),
-				headers: {
-					"Content-Type": "application/json",
-				},
-				credentials: "include",
-			});
+
+			// FormData défini un content-type multipart/form-data qui permet d'envoyer des fichiers
+			// dans le back on utilise multer pour gérer les fichiers envoyés
+			const response = await fetch(
+				"http://localhost:9000/api/v1/product",
+				{
+					method: "POST",
+					body: formData,
+					credentials: "include",
+				}
+			);
+            if(response.status === 400) {
+                response.json().then(data => { 
+                    console.log(data.message);
+                    setError(data.message);
+                })
+            }
             
 			if (response.ok) {
-                console.log(data);
-                form.reset();
+				form.reset();
 				navigate("/product");
 			}
 		} catch (error) {
@@ -94,6 +101,7 @@ function AddForm() {
 						name="main_title"
 						required
 					/>
+
 					<label htmlFor="sub_title">Titre secondaire</label>
 					<input
 						type="text"
@@ -101,18 +109,23 @@ function AddForm() {
 						name="sub_title"
 						required
 					/>
+
 					<label htmlFor="description">Description</label>
 					<textarea
 						id="description"
 						name="description"
 						required
 					></textarea>
+
 					<label htmlFor="price">Prix</label>
 					<input type="number" id="price" name="price" required />
+
 					<label htmlFor="ref">Reference</label>
 					<input type="text" id="ref" name="ref" required />
+
 					<label htmlFor="stock">Stock</label>
 					<input type="number" id="stock" name="stock" required />
+
 					<select name="seller" id="seller">
 						{sellers.map((s) => {
 							return (
@@ -122,6 +135,7 @@ function AddForm() {
 							);
 						})}
 					</select>
+
 					<select name="category" id="category">
 						{categories.map((c) => {
 							return (
@@ -131,6 +145,10 @@ function AddForm() {
 							);
 						})}
 					</select>
+
+					<label htmlFor="image">Image</label>
+					<input type="file" name="image" id="image" />
+                    {error && <p style={{color: "red"}}>{error}</p>}
 
 					<button type="submit">Ajouter</button>
 				</form>

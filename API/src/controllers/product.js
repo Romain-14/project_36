@@ -1,4 +1,5 @@
 import Query from "../model/Query.js";
+import upload from "../config/multer.js";
 
 // on passe la callback en async pour pouvoir utiliser await, approche moderne. (sinon on aurait pu utiliser .then() et .catch())
 const getAll = async (req, res) => {
@@ -6,13 +7,13 @@ const getAll = async (req, res) => {
 	try {
 		// on récupère les données de la table product avec la méthode query() de pool ( pas execute ici car on ne fait pas de modification dans la base de données)
 		const query = `
-            SELECT product.id, main_title, sub_title, description, price, ref, stock, seller.label AS seller, category.label AS category
+            SELECT product.id, main_title, sub_title, description, price, ref, stock, src_img, seller.label AS seller, category.label AS category
             FROM product 
             JOIN seller ON product.seller_id = seller.id 
             JOIN category ON product.category_id = category.id
         `;
 		const response = await Query.run(query);
-
+		console.log(response);
 		// on renvoie la réponse au client au format JSON, un message et la réponse (les données de la table product)
 		res.json({
 			msg: "Je suis sur la route API pour récupérer TOUS les produits !",
@@ -27,7 +28,7 @@ const getAll = async (req, res) => {
 const getById = async (req, res) => {
 	try {
 		const query = `
-                SELECT product.id, main_title, sub_title, description, price, ref, stock, seller.label AS seller, category.label AS category
+                SELECT product.id, main_title, sub_title, description, price, ref, stock, src_img, seller.label AS seller, category.label AS category
                 FROM product 
                 JOIN seller ON product.seller_id = seller.id 
                 JOIN category ON product.category_id = category.id
@@ -48,22 +49,37 @@ const getById = async (req, res) => {
 };
 
 const add = async (req, res) => {
-	console.log("ADD", req.body);
-	// on récupère les données envoyées par le client en déstructurant l'objet req.body
-
 	try {
-		// on insère les données dans la table product avec la méthode execute() de pool (on utilise execute car on fait une modification dans la base de données) cette méthode sécurise les données en les passant en paramètre de la requête SQL, appelé placeholder ( ? )
-		const query = `INSERT INTO product (main_title, sub_title, description, price, ref, stock, seller_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+		upload(req, res, async function (error) {
+			if (error) {
+				return res.status(400).json({ message: error });
+			}
 
-		// METHODE 1 : tout décrire ce qui doit être inséré pas la plus optimale pour la lisibilité
-		// const response = await Query.runWithParams(query, [req.body.title1, req.body.title2, req.body.description, req.body.price, req.body.ref, req.body.stock, req.body.seller_id, req.body.category_id]);
+			if (!req.file) {
+				return res
+					.status(400)
+					.json({
+						message:
+							"Veuillez sélectionner une image au format webp",
+					});
+			}
 
-		// METHODE 2 : passer directement l'objet req.body
-		const response = await Query.runWithParams(query, req.body);
+			const product = {
+				...req.body,
+				src_img: req.file.originalname,
+			};
+			const query = `INSERT INTO product (main_title, sub_title, description, price, ref, stock, seller_id, category_id, src_img) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+			const response = await Query.runWithParams(query, product);
 
-		res.json({ msg: "Les données ont bien été insérées !", response });
+			if (response) {
+				res.json({
+					msg: "Les données ont bien été insérées !",
+					response,
+				});
+			}
+		});
 	} catch (error) {
-        console.log("ERROR",error)
+		console.log("ERROR", error);
 		res.status(500).json({
 			msg: "Erreur de serveur",
 			error: error.message,
@@ -90,16 +106,16 @@ const update = async (req, res) => {
 };
 
 const remove = async (req, res) => {
-    try {
-        const query = `DELETE FROM product WHERE id = ?`;
-        await Query.runWithParams(query, req.params);
-        res.json({ msg: "Le produit a bien été supprimé !", });
-    } catch (error) {
-        res.status(500).json({
-            msg: "Erreur de serveur",
-            error: error.message,
-        });
-    }
+	try {
+		const query = `DELETE FROM product WHERE id = ?`;
+		await Query.runWithParams(query, req.params);
+		res.json({ msg: "Le produit a bien été supprimé !" });
+	} catch (error) {
+		res.status(500).json({
+			msg: "Erreur de serveur",
+			error: error.message,
+		});
+	}
 };
 
 export { getAll, getById, add, update, remove };

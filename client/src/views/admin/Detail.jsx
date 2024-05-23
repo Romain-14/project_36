@@ -42,6 +42,7 @@ function Detail() {
                 <p>En stock : {product.stock}</p>
                 <p>Vendeur : {product.seller}</p>
                 <p>Catégorie {product.category}</p>
+                <img src={"http://localhost:9000/images/" + product.src_img} alt={product.main_title} />
 
             </article>
 

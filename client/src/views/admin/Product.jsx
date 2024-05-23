@@ -77,8 +77,8 @@ function Product() {
 									<td>
 										<img
 											src={
-												product.image
-													? product.image
+												product.src_img
+													? "http://localhost:9000/images/" + product.src_img
 													: noPicture
 											}
 											alt={product.name}
