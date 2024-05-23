@@ -1,6 +1,7 @@
 API/node_modules
-client/node_modules
 API/.env
+client/node_modules
+client/.env
 
 # Logs
 logs

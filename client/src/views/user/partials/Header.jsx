@@ -10,13 +10,15 @@ import {
 import { useUser } from "../../../hooks/useUser";
 import useMenu from "../../../hooks/useMenu";
 import logo from "../../../assets/images/logo.png";
+import { useCart } from "../../../hooks/useCart";
 
 function Header() {
 	const { user, logout } = useUser();
 	const { isMenuOpen, toggleMenu } = useMenu();
+    // console.log(useCart())
+    const { cart } = useCart();
 
-
-    console.log(user)
+    console.log(cart.length)
 	return (
 		<header>
 			{isMenuOpen && <div className="overlayOn" onClick={toggleMenu} />}
@@ -74,7 +76,8 @@ function Header() {
 						</NavLink>
 					</>
 				)}
-				<NavLink to={"cart"}>
+				<NavLink to={"cart"} className="cart">
+                    <span className="cart-length">{cart.length ? cart.length : null }</span>
 					<FontAwesomeIcon icon={faCartShopping} />
 				</NavLink>
 			</nav>

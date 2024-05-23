@@ -155,6 +155,18 @@ header {
 	}
 }
 
+.cart {
+    position: relative;
+}
+
+.cart-length {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+}
+
 .overlayOn {
 	position: absolute;
 	top: 0;
@@ -371,3 +383,5 @@ table {
     width: 100%;
     border-collapse: collapse;
 }
+
+
