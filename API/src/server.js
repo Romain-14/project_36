@@ -11,8 +11,6 @@ const corsOptions = cors({
 	credentials: true,
 });
 
-
-
 app.use(corsOptions);
 
 app.use(newSession);

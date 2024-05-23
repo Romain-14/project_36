@@ -35,9 +35,10 @@ function  useCheckAuth() {
 				setIsLoading(false);
 			}
 		}
-        setTimeout(() => {
+        // simuler une latence de 2 secondes pour voir le chargement en localhost
+        // setTimeout(() => {
             fetchAuthentication();
-        }, 2000);
+        // }, 2000);
 	}, []);
 
 
