@@ -28,7 +28,7 @@ LOCAL_PORT="9000"
 NODE_ENV="production"
 CLIENT_URL = "http://prenomnom.ide.3wa.io:9500"
 
-SECRET_SESSION="svVnaKqJkY4A$wY7hKx9JQFhsL12Prqwemnpt1H5bXPZ#coasiS60z6$VejKdDYQ3A7"
+SECRET_SESSION="genererLeSecret"
 ```
 
 Fichier server.js
