@@ -54,7 +54,7 @@ app.use(cors(corsOptions));
 // permets d'avoir le retour dans le terminal pertinent
 const domain =
     process.env.NODE_ENV === "production"
-        ? `http://romainfournier.ide.3wa.io:${PORT}`
+        ? `http://prenomnom.ide.3wa.io:${PORT}`
         : `localhost:${PORT}`;
 app.listen(PORT, () => {
     console.log(`Server is running at http://${domain}`);
